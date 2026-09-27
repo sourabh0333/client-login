@@ -1,0 +1,200 @@
+.shell {
+  min-height: 100dvh;
+  position: relative;
+  display: flex;
+  align-items: center;
+  padding: 32px clamp(24px, 3.5vw, 56px);
+}
+
+/* The park fills the whole window behind the card. */
+.backdrop {
+  position: fixed;
+  inset: 0;
+}
+
+/* Frosted card over the left of the scene: a hairline gradient border, a soft top
+   highlight, and a short staggered entrance. */
+.card {
+  position: relative;
+  z-index: 1;
+  width: min(440px, 100%);
+  display: flex;
+  flex-direction: column;
+  gap: 26px;
+  padding: 30px 36px 24px;
+  border-radius: 28px;
+  background:
+    radial-gradient(120% 60% at 50% 0%, var(--glass-glow), transparent 60%),
+    var(--glass);
+  box-shadow: 0 30px 70px -20px rgba(8, 16, 10, 0.55), 0 2px 10px rgba(8, 16, 10, 0.12);
+  backdrop-filter: blur(18px) saturate(1.25);
+  -webkit-backdrop-filter: blur(18px) saturate(1.25);
+  animation: rise 700ms cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+
+.card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  padding: 1px;
+  border-radius: inherit;
+  background: linear-gradient(160deg, var(--glass-edge), transparent 40%, transparent 70%, var(--glass-edge-2));
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+}
+
+.card > * {
+  animation: rise 600ms cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+
+.card > :nth-child(2) {
+  animation-delay: 80ms;
+}
+
+.card > :nth-child(3) {
+  animation-delay: 160ms;
+}
+
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .card,
+  .card > * {
+    animation: none;
+  }
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-weight: 600;
+  font-size: 16px;
+  color: var(--ink);
+  text-decoration: none;
+  width: fit-content;
+}
+
+.brand:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 4px;
+  border-radius: 6px;
+}
+
+.mark {
+  width: 32px;
+  height: 32px;
+  border-radius: 10px;
+  display: grid;
+  place-items: center;
+  background: var(--accent);
+  color: var(--on-accent);
+}
+
+.heading {
+  font-family: var(--font-display), Georgia, serif;
+  font-weight: 500;
+  font-size: clamp(30px, 2.4vw, 38px);
+  line-height: 1.08;
+  letter-spacing: -0.02em;
+  color: var(--ink);
+  margin: 0 0 10px;
+}
+
+.lede {
+  margin: 0 0 24px;
+  color: var(--muted);
+  font-size: 15px;
+  line-height: 1.55;
+}
+
+.footer {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  font-size: 13px;
+  color: var(--muted);
+  padding-top: 20px;
+  border-top: 1px solid var(--glass-line);
+}
+
+.footer nav {
+  display: flex;
+  gap: 14px;
+}
+
+.footer a {
+  color: var(--accent-ink);
+  font-weight: 500;
+  text-decoration: none;
+}
+
+.footer a:hover {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+@media (max-height: 820px) and (min-width: 900px) {
+  .shell {
+    padding-block: 16px;
+  }
+
+  .card {
+    gap: 16px;
+    padding: 22px 32px 18px;
+  }
+
+  .heading {
+    font-size: 30px;
+    margin-bottom: 6px;
+  }
+
+  .lede {
+    margin-bottom: 16px;
+    font-size: 14px;
+  }
+
+  .footer {
+    padding-top: 14px;
+  }
+}
+
+/* Phones and small tablets: the still of the park becomes a banner above the form. */
+@media (max-width: 899px) {
+  .shell {
+    display: block;
+    padding: 12px;
+    background: var(--page);
+  }
+
+  .backdrop {
+    position: relative;
+    height: 240px;
+    border-radius: 24px;
+    overflow: hidden;
+  }
+
+  .card {
+    width: 100%;
+    margin-top: 12px;
+    padding: 24px 20px;
+    background: transparent;
+    border: 0;
+    box-shadow: none;
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+    animation: none;
+  }
+
+  .card::before {
+    display: none;
+  }
+}

@@ -1,0 +1,30 @@
+{
+  "name": "client-login",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "eslint",
+    "assets": "node scripts/build-assets.mjs"
+  },
+  "dependencies": {
+    "@react-three/drei": "^10.7.9",
+    "@react-three/fiber": "^9.8.1",
+    "next": "16.3.6",
+    "react": "19.2.8",
+    "react-dom": "19.2.8",
+    "three": "^0.186.1"
+  },
+  "devDependencies": {
+    "@gltf-transform/core": "^4.5.0",
+    "@gltf-transform/extensions": "^4.5.0",
+    "@gltf-transform/functions": "^4.5.0",
+    "eslint": "^9",
+    "eslint-config-next": "16.3.6",
+    "meshoptimizer": "^1.3.0",
+    "puppeteer-core": "^25.12.0",
+    "sharp": "^0.35.4"
+  }
+}

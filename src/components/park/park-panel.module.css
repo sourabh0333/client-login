@@ -1,0 +1,42 @@
+.panel {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background: #cfdcc6;
+  isolation: isolate;
+}
+
+/* Painted still of the park: shows first, and stays for reduced motion or small screens. */
+.poster {
+  position: absolute;
+  inset: 0;
+  background-image: url("/park-still.webp"), linear-gradient(180deg, #b9d3e6 0%, #e8e6d8 46%, #8aa25c 47%, #5f7a36 100%);
+  background-size: cover;
+  /* The scene is framed to the right of the form card; keep that part of the still in view. */
+  background-position: 70% center;
+  transition: opacity 900ms ease;
+}
+
+.poster[data-hidden="true"] {
+  opacity: 0;
+}
+
+.scene {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  transition: opacity 900ms ease;
+}
+
+.scene[data-ready="true"] {
+  opacity: 1;
+}
+
+/* A soft inner vignette so the panel edges settle into the page. */
+.shade {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  box-shadow: inset 0 0 160px rgba(20, 30, 15, 0.16);
+}
