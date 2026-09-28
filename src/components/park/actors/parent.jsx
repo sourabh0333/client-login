@@ -81,6 +81,7 @@ export function Parent({ world }) {
     s.look = damp(s.look, 1, 1, dt);
     s.smooth = (s.smooth ?? s.target.clone()).lerp(s.target, 1 - Math.exp(-dt * 2.5));
     lookAt(b.neck_01, b.Head, s.smooth, 0.8 * s.look);
+    world.group("parent", b.spine_02.getWorldPosition(new THREE.Vector3()), 0.85, "Watching from the bench");
   });
 
   return <primitive object={actor.root} />;

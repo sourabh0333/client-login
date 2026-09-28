@@ -314,6 +314,15 @@ export function BallGame({ world }) {
       lookAt(bones.neck_01, bones.Head, ball.position, 0.85);
     }
     world.set("ball", ball.position);
+
+    // For the hover focus: both boys and the ball, however far it has rolled.
+    const pa = actors[0].bones.pelvis.getWorldPosition(new THREE.Vector3());
+    const pb = actors[1].bones.pelvis.getWorldPosition(new THREE.Vector3());
+    const center = pa.clone().add(pb).add(ball.position).divideScalar(3);
+    const radius = Math.max(center.distanceTo(pa), center.distanceTo(pb), center.distanceTo(ball.position)) + 0.55;
+    const label =
+      s.mode === "loose" || s.mode === "crouch" ? "Fetching the ball" : s.mode === "dribble" ? "Bouncing the ball" : "Playing catch";
+    world.group("catch", center, radius, label);
   });
 
   return (

@@ -89,6 +89,7 @@ export function Swinger({ world }) {
     ahead.y -= 0.4 + 0.3 * Math.max(pump, 0);
     lookAt(b.neck_01, b.Head, ahead, 0.6);
     world.set("swinger", b.Head.getWorldPosition(new THREE.Vector3()));
+    world.group("swing", b.spine_02.getWorldPosition(new THREE.Vector3()), 0.95, "On the swing");
   });
 
   return (

@@ -77,6 +77,7 @@ export function Artist({ board, canvasRef, world }) {
     lookTarget: new THREE.Vector3(0, 1, 0),
     jar: "table",
     stroke: 0,
+    activity: "Sketching the park",
   }),
     []
   );
@@ -102,6 +103,7 @@ export function Artist({ board, canvasRef, world }) {
     };
 
     const draw = async (mode, seconds) => {
+      s.activity = mode === "sketch" ? "Sketching the park" : "Painting in watercolour";
       await at(EASEL_SPOT);
       props.pencil.visible = mode === "sketch";
       props.brush.visible = mode === "paint";
@@ -119,6 +121,7 @@ export function Artist({ board, canvasRef, world }) {
     };
 
     const stepBack = async () => {
+      s.activity = "Looking at her drawing";
       await at(EASEL_BACK);
       // Head tilt at the drawing, arms folded while she thinks about it.
       if (chance(0.5)) actor.play("Idle_FoldArms_Loop", { fade: 0.5 });
@@ -131,11 +134,13 @@ export function Artist({ board, canvasRef, world }) {
     };
 
     const wander = async () => {
+      s.activity = "Taking in the view";
       await at(VIEW_SPOT);
       await glanceAround(rand(4000, 7000));
     };
 
     const fetchPaint = async () => {
+      s.activity = "Fetching paint";
       await at(TABLE_SPOT);
       const pick = actor.play("PickUp_Table", { loop: false, fade: 0.3 });
       await wait(actor.duration("PickUp_Table") * 450, signal);
@@ -153,6 +158,7 @@ export function Artist({ board, canvasRef, world }) {
     };
 
     const returnPaint = async () => {
+      s.activity = "Putting the paint back";
       await at(EASEL_SPOT);
       await actor.play("Interact", { loop: false, fade: 0.25 });
       s.jar = "hands";
@@ -165,6 +171,7 @@ export function Artist({ board, canvasRef, world }) {
     };
 
     const newSheet = async () => {
+      s.activity = "Starting a fresh sheet";
       await at(EASEL_SPOT);
       await actor.play("Interact", { loop: false, fade: 0.25 });
       board.reset();
@@ -271,6 +278,12 @@ export function Artist({ board, canvasRef, world }) {
     } else {
       props.jar.position.set(...TABLE_JAR);
     }
+
+    // For the hover focus: her and her easel, wherever she has wandered.
+    const hips = b.pelvis.getWorldPosition(new THREE.Vector3());
+    const easel = canvas.getWorldPosition(new THREE.Vector3());
+    const spread = Math.hypot(hips.x - easel.x, hips.z - easel.z);
+    world.group("artist", hips.clone().lerp(easel, spread < 1.5 ? 0.4 : 0.1), 0.75 + Math.min(spread, 1.5) * 0.4, s.activity);
   });
 
   return (

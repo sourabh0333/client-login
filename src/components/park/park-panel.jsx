@@ -1,7 +1,7 @@
 "use client";
 
 import dynamic from "next/dynamic";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import styles from "./park-panel.module.css";
 
 // Three.js and the park only load in the browser, after the form has rendered.
@@ -31,15 +31,18 @@ function useCanAnimate() {
 export default function ParkPanel({ avoid }) {
   const canAnimate = useCanAnimate();
   const [ready, setReady] = useState(false);
+  const labelRef = useRef(null);
 
   return (
     <div className={styles.panel} aria-hidden="true">
       <div className={styles.poster} data-hidden={ready} />
       {canAnimate && (
         <div className={styles.scene} data-ready={ready}>
-          <ParkScene avoid={avoid} onReady={() => setTimeout(() => setReady(true), 400)} />
+          <ParkScene avoid={avoid} labelRef={labelRef} onReady={() => setTimeout(() => setReady(true), 400)} />
         </div>
       )}
+      {/* Hover focus: a live caption of what the focused group is doing. */}
+      <div ref={labelRef} className={styles.caption} />
       <div className={styles.shade} />
     </div>
   );

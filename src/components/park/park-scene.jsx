@@ -11,7 +11,8 @@ import { Bench, Easel, PaintTable, Scenery, Slide, SwingFrame } from "./props";
 import { SketchBoard } from "./sketch-board";
 import { WindClock } from "./wind";
 import { CAMERA } from "./layout";
-import { Actors } from "./actors";
+import { Actors, createWorld } from "./actors";
+import { FocusController, createFocus } from "./focus";
 
 // How far the form card reaches into the screen from the left (0 if there is none).
 function useCardEdge(selector) {
@@ -39,7 +40,7 @@ function useCardEdge(selector) {
 // A slow, hand-held drift plus a little parallax towards the pointer. When a form card
 // covers the left of the screen, the projection centre moves right by half the card's
 // width, so the park is framed in the open area and only lawn and trees sit behind it.
-function CameraRig({ avoid }) {
+function CameraRig({ avoid, focusRef }) {
   const size = useThree((s) => s.size);
   const pointer = useRef([0, 0]);
   const edge = useCardEdge(avoid);
@@ -75,15 +76,32 @@ function CameraRig({ avoid }) {
     return () => window.removeEventListener("pointermove", onMove);
   }, []);
 
+  const look = useRef(null);
+
   useFrame(({ clock, camera }, dt) => {
     applyFraming(camera);
     const t = clock.elapsedTime;
     const [px, py] = pointer.current;
+    const focus = focusRef.current;
+    const w = focus.weight;
+    // Parallax fades out while focused, so the pointer can rest on a group steadily.
     const goal = base
       .clone()
-      .add(new THREE.Vector3(Math.sin(t * 0.13) * 0.12 + px * 0.35, Math.sin(t * 0.21) * 0.04 - py * 0.12, 0));
-    camera.position.lerp(goal, 1 - Math.exp(-dt * 1.5));
-    camera.lookAt(target);
+      .add(new THREE.Vector3(Math.sin(t * 0.13) * 0.12 + px * 0.35 * (1 - w), Math.sin(t * 0.21) * 0.04 - py * 0.12 * (1 - w), 0));
+    // Focus pull: move in along the line towards the group, rising a little so the camera
+    // looks over anyone nearer (the artist is often between the camera and the others).
+    if (w > 0.001) {
+      const flatDir = new THREE.Vector3(goal.x - focus.center.x, 0, goal.z - focus.center.z);
+      const dist = flatDir.length();
+      const want = Math.min(dist, focus.radius * 2.6 + 2.4);
+      const vantage = focus.center.clone().addScaledVector(flatDir.normalize(), want);
+      vantage.y = Math.max(base.y, focus.center.y + 0.9 + want * 0.16);
+      goal.lerp(vantage, w * 0.85);
+    }
+    camera.position.lerp(goal, 1 - Math.exp(-dt * 1.6));
+    const aim = target.clone().lerp(focus.center, 0.9 * w);
+    look.current = (look.current ?? aim.clone()).lerp(aim, 1 - Math.exp(-dt * 2.2));
+    camera.lookAt(look.current);
   });
   return null;
 }
@@ -119,12 +137,15 @@ function Lights() {
   );
 }
 
-function World({ board, avoid }) {
+function World({ board, avoid, labelRef }) {
   const canvasRef = useRef();
+  const [world] = useState(createWorld);
+  const focusRef = useRef(createFocus());
   return (
     <>
       <WindClock />
-      <CameraRig avoid={avoid} />
+      <CameraRig avoid={avoid} focusRef={focusRef} />
+      <FocusController world={world} focusRef={focusRef} labelRef={labelRef} />
       <Lights />
       <Sky />
       <fog attach="fog" args={["#e6e6da", 24, 75]} />
@@ -137,13 +158,13 @@ function World({ board, avoid }) {
       <Easel board={board} canvasRef={canvasRef} />
       <Scenery />
       <Suspense fallback={null}>
-        <Actors board={board} canvasRef={canvasRef} />
+        <Actors board={board} canvasRef={canvasRef} world={world} />
       </Suspense>
     </>
   );
 }
 
-export default function ParkScene({ onReady, avoid }) {
+export default function ParkScene({ onReady, avoid, labelRef }) {
   const [board] = useState(() => {
     const b = new SketchBoard();
     // ?stage=paint skips ahead to the painting part while developing.
@@ -186,7 +207,7 @@ export default function ParkScene({ onReady, avoid }) {
           flipflops={3}
           onFallback={() => setDpr(1)}
         />
-        <World board={board} avoid={avoid} />
+        <World board={board} avoid={avoid} labelRef={labelRef} />
       </Canvas>
     </div>
   );

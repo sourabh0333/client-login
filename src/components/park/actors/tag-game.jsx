@@ -80,6 +80,12 @@ export function TagGame({ world }) {
       lookAt(r.actor.bones.neck_01, r.actor.bones.Head, target, r.pause > 0 ? 0.9 : 0.55);
     }
     world.set("runner", r0.actor.root.position.clone().setY(1));
+
+    // For the hover focus: the two of them, wherever the chase has taken them.
+    const p0 = r0.actor.root.position.clone().setY(0.7);
+    const p1 = r1.actor.root.position.clone().setY(0.7);
+    const tagged = r0.pause > 0 || r1.pause > 0;
+    world.group("tag", p0.clone().lerp(p1, 0.5), Math.min(p0.distanceTo(p1) / 2 + 0.7, 3), tagged ? "Tagged — you're it!" : "Playing tag");
   });
 
   return (
