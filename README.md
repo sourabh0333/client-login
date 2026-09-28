@@ -6,6 +6,7 @@ A Next.js login page with a live 3D park on the right: a girl sketching and pain
 npm install
 npm run dev
 ```
+hi
 
 Open http://localhost:3000.
 
