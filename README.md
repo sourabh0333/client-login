@@ -10,6 +10,22 @@ hi
 
 Open http://localhost:3000.
 
+## Exploring the park
+
+The page is split 30 / 70: sign-in on the left, the park on the right.
+
+| Input | Does |
+| --- | --- |
+| Move the mouse | The view glances towards the cursor |
+| Drag | Look around |
+| Scroll, or + / − (also the on-screen buttons) | Zoom |
+| W A S D or arrow keys | Move through the park |
+| Q / E | Turn |
+| Click a group of people | Follow them (caption says what they are doing) |
+| R, Esc, or the reset button | Back to the starting view |
+
+Effects: the page opens with a short fly-in from an aerial shot; a glowing ring marks the people under the cursor (pulsing) or being followed (steady); the hint bar lights up the control in use. Keys are ignored while typing in the form. Movement is kept inside the park and eases smoothly. The camera controller is `src/components/park/camera-rig.jsx`; hover and caption logic is `src/components/park/focus.jsx`.
+
 ## How the park works
 
 | Piece | Where |

@@ -11,9 +11,9 @@ export const metadata = {
 export default function LoginPage() {
   return (
     <div className={styles.shell}>
-      <div className={styles.backdrop}>
-        {/* The scene frames itself around this card so nothing important hides behind it. */}
-        <ParkPanel avoid="#auth-card" />
+      {/* 30% sign-in, 70% explorable park. */}
+      <div className={styles.stage}>
+        <ParkPanel />
       </div>
 
       <main id="auth-card" className={styles.card}>

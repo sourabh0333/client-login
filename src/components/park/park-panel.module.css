@@ -13,7 +13,7 @@
   inset: 0;
   background-image: url("/park-still.webp"), linear-gradient(180deg, #b9d3e6 0%, #e8e6d8 46%, #8aa25c 47%, #5f7a36 100%);
   background-size: cover;
-  /* The scene is framed to the right of the form card; keep that part of the still in view. */
+  /* Keep the characters (right of centre) in view when the still is cropped. */
   background-position: 70% center;
   transition: opacity 900ms ease;
 }
@@ -62,4 +62,134 @@
   backdrop-filter: blur(8px);
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
   will-change: transform, opacity;
+}
+
+/* How to explore: a pill of key hints along the bottom. It stands out on arrival and
+   quietens once the visitor has moved the camera. */
+.hints {
+  position: absolute;
+  left: 50%;
+  bottom: 22px;
+  display: flex;
+  gap: 16px;
+  padding: 9px 16px;
+  border-radius: 999px;
+  background: rgba(12, 18, 14, 0.62);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  color: #e9eee6;
+  font-size: 13px;
+  white-space: nowrap;
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.22);
+  opacity: 0;
+  transform: translate(-50%, 10px);
+  transition: opacity 600ms ease, transform 600ms ease;
+  pointer-events: none;
+}
+
+.hints[data-ready="true"] {
+  opacity: 1;
+  transform: translate(-50%, 0);
+  transition-delay: 800ms;
+}
+
+.hints[data-ready="true"][data-quiet="true"] {
+  opacity: 0.45;
+  transition-delay: 0ms;
+}
+
+.hint {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  transition: color 160ms ease;
+}
+
+/* The control being used lights up; the bar brightens while anything is active. */
+.hint[data-active="true"] {
+  color: #ffffff;
+}
+
+.hint[data-active="true"] kbd {
+  background: #8cc7a5;
+  border-color: #8cc7a5;
+  color: #0f1a14;
+  transform: translateY(1px);
+}
+
+.hints:has(.hint[data-active="true"]) {
+  opacity: 1;
+}
+
+.hint kbd {
+  transition: background-color 140ms ease, border-color 140ms ease, color 140ms ease, transform 140ms ease;
+  font: inherit;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  padding: 2px 7px;
+  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.14);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+}
+
+/* Zoom and reset, for visitors who'd rather click than drag or type. */
+.controls {
+  position: absolute;
+  right: 20px;
+  bottom: 20px;
+  display: grid;
+  gap: 8px;
+  opacity: 0;
+  transition: opacity 600ms ease 900ms;
+}
+
+.controls[data-ready="true"] {
+  opacity: 1;
+}
+
+.controls button {
+  width: 40px;
+  height: 40px;
+  display: grid;
+  place-items: center;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  background: rgba(12, 18, 14, 0.62);
+  color: #f3f5ef;
+  cursor: pointer;
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+  transition: background-color 160ms ease, transform 120ms ease;
+}
+
+.controls button:hover {
+  background: rgba(12, 18, 14, 0.82);
+}
+
+.controls button:active {
+  transform: scale(0.95);
+}
+
+.controls button:focus-visible {
+  outline: 2px solid #8cc7a5;
+  outline-offset: 2px;
+}
+
+.controls svg {
+  width: 18px;
+  height: 18px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hints,
+  .controls {
+    transition: none;
+  }
 }

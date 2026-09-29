@@ -1,49 +1,35 @@
+/* Two columns: the sign-in panel takes 30% on the left, the explorable park 70%. */
 .shell {
   min-height: 100dvh;
-  position: relative;
-  display: flex;
-  align-items: center;
-  padding: 32px clamp(24px, 3.5vw, 56px);
+  display: grid;
+  grid-template-columns: minmax(360px, 30%) 1fr;
+  background: var(--page);
 }
 
-/* The park fills the whole window behind the card. */
-.backdrop {
-  position: fixed;
-  inset: 0;
+.stage {
+  grid-column: 2;
+  grid-row: 1;
+  position: sticky;
+  top: 0;
+  height: 100dvh;
 }
 
-/* Frosted card over the left of the scene: a hairline gradient border, a soft top
-   highlight, and a short staggered entrance. */
+/* The sign-in panel: full height, content centred, brand at the top, links at the foot. */
 .card {
+  grid-column: 1;
+  grid-row: 1;
   position: relative;
   z-index: 1;
-  width: min(440px, 100%);
+  min-height: 100dvh;
   display: flex;
   flex-direction: column;
-  gap: 26px;
-  padding: 30px 36px 24px;
-  border-radius: 28px;
+  gap: 24px;
+  padding: 32px clamp(24px, 2.6vw, 44px) 24px;
   background:
-    radial-gradient(120% 60% at 50% 0%, var(--glass-glow), transparent 60%),
-    var(--glass);
-  box-shadow: 0 30px 70px -20px rgba(8, 16, 10, 0.55), 0 2px 10px rgba(8, 16, 10, 0.12);
-  -webkit-backdrop-filter: blur(18px) saturate(1.25);
-  backdrop-filter: blur(18px) saturate(1.25);
-  animation: rise 700ms cubic-bezier(0.2, 0.8, 0.2, 1) both;
-}
-
-.card::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  padding: 1px;
-  border-radius: inherit;
-  background: linear-gradient(160deg, var(--glass-edge), transparent 40%, transparent 70%, var(--glass-edge-2));
-  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
-  mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
-  -webkit-mask-composite: xor;
-  mask-composite: exclude;
-  pointer-events: none;
+    radial-gradient(120% 50% at 0% 0%, var(--glass-glow), transparent 60%),
+    var(--page);
+  border-right: 1px solid var(--glass-line);
+  box-shadow: 12px 0 40px -18px rgba(8, 16, 10, 0.45);
 }
 
 .card > * {
@@ -66,7 +52,6 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .card,
   .card > * {
     animation: none;
   }
@@ -99,6 +84,16 @@
   color: var(--on-accent);
 }
 
+.content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 100%;
+  max-width: 400px;
+  margin: 0 auto;
+}
+
 .heading {
   font-family: var(--font-display), Georgia, serif;
   font-weight: 500;
@@ -122,8 +117,11 @@
   gap: 16px;
   font-size: 13px;
   color: var(--muted);
-  padding-top: 20px;
+  padding-top: 18px;
   border-top: 1px solid var(--glass-line);
+  width: 100%;
+  max-width: 400px;
+  margin: 0 auto;
 }
 
 .footer nav {
@@ -142,14 +140,11 @@
   text-underline-offset: 3px;
 }
 
+/* Shorter laptop screens: tighten the rhythm so everything fits without scrolling. */
 @media (max-height: 820px) and (min-width: 900px) {
-  .shell {
-    padding-block: 16px;
-  }
-
   .card {
-    gap: 16px;
-    padding: 22px 32px 18px;
+    gap: 14px;
+    padding: 20px clamp(22px, 2.4vw, 40px) 16px;
   }
 
   .heading {
@@ -163,7 +158,7 @@
   }
 
   .footer {
-    padding-top: 14px;
+    padding-top: 12px;
   }
 }
 
@@ -172,10 +167,9 @@
   .shell {
     display: block;
     padding: 12px;
-    background: var(--page);
   }
 
-  .backdrop {
+  .stage {
     position: relative;
     height: 240px;
     border-radius: 24px;
@@ -183,18 +177,15 @@
   }
 
   .card {
-    width: 100%;
+    min-height: 0;
     margin-top: 12px;
-    padding: 24px 20px;
+    padding: 24px 8px;
     background: transparent;
     border: 0;
     box-shadow: none;
-    -webkit-backdrop-filter: none;
-    backdrop-filter: none;
-    animation: none;
   }
 
-  .card::before {
-    display: none;
+  .card > * {
+    animation: none;
   }
 }
