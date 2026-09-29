@@ -13,8 +13,15 @@ export const EASEL_BACK = { position: [0.78, 0, 3.66], facing: 2.214 };
 export const TABLE = { position: [-1.35, 0, 2.6], rotation: 0.25 };
 export const TABLE_SPOT = { position: [-1.2, 0, 3.25], facing: Math.PI + 0.25 };
 
-// A second place the artist likes to wander to and look at the view.
-export const VIEW_SPOT = { position: [0.4, 0, 4.9], facing: -0.35 };
+// A second place the artist likes to wander to and look at the view (clear of the onlookers).
+export const VIEW_SPOT = { position: [1.8, 0, 5.1], facing: -0.35 };
+
+// Two passers-by watching the artist from behind her, looking over her shoulder at the sheet.
+const toEasel = (x, z) => Math.atan2(EASEL.position[0] - x, EASEL.position[2] - z);
+export const ONLOOKERS = [
+  { name: "onlooker_a", position: [-0.45, 0, 3.72], facing: toEasel(-0.45, 3.72) },
+  { name: "onlooker_b", position: [-0.02, 0, 4.2], facing: toEasel(-0.02, 4.2) },
+];
 
 export const SWINGS = { position: [-3.4, 0, -3.6], rotation: 1.25 };
 export const SLIDE = { position: [-5.4, 0, -8.5], rotation: 0.6 };
@@ -59,4 +66,18 @@ export const TREES = [
   { position: [-11.5, 0, -8.5], scale: 1.6, seed: 9 },
   { position: [7.8, 0, 3.4], scale: 1.05, seed: 10 },
   { position: [-12.5, 0, 6.5], scale: 1.5, seed: 11 },
+  // A fuller line of trees across the back of the park…
+  { position: [-6.2, 0, -15.8], scale: 1.45, seed: 12 },
+  { position: [-10.4, 0, -14.6], scale: 1.55, seed: 13 },
+  { position: [5.6, 0, -14.2], scale: 1.4, seed: 14 },
+  { position: [12.2, 0, -12.4], scale: 1.6, seed: 15 },
+  { position: [-14.4, 0, -12.2], scale: 1.5, seed: 16 },
+  { position: [0.2, 0, -15.6], scale: 1.35, seed: 17 },
+  // …and more beyond the hedges, their crowns showing above them.
+  { position: [-12.0, 0, -27.0], scale: 1.8, seed: 18 },
+  { position: [-4.2, 0, -28.5], scale: 1.9, seed: 19 },
+  { position: [3.4, 0, -27.2], scale: 1.75, seed: 20 },
+  { position: [10.2, 0, -26.0], scale: 1.85, seed: 21 },
+  { position: [16.4, 0, -23.5], scale: 1.7, seed: 22 },
+  { position: [-18.5, 0, -22.0], scale: 1.8, seed: 23 },
 ];

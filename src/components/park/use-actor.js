@@ -7,7 +7,7 @@ import { useFrame } from "@react-three/fiber";
 import { useEffect, useMemo } from "react";
 import { createRetargeter, useClips } from "./clips";
 
-export const CAST = ["artist", "swinger", "thrower_a", "thrower_b", "runner_a", "runner_b", "parent"];
+export const CAST = ["artist", "swinger", "thrower_a", "thrower_b", "runner_a", "runner_b", "parent", "onlooker_a", "onlooker_b"];
 export const modelUrl = (name) => `/models/humans/${name}.glb`;
 
 const CARD_RE = /hair|brow|lash|ponytail|braid|bob0|short0|long0|afro/;

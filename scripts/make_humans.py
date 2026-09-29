@@ -120,6 +120,32 @@ CAST = [
             "toigo_ankle_boots_female/toigo_ankle_boots_female.mhclo",
         ],
     },
+    # Two passers-by who stop behind the artist to watch her work.
+    {
+        "name": "onlooker_a",
+        "phenotype": {"gender": 1.0, "age": years(42), "muscle": 0.5, "weight": 0.55, "height": 0.55, "race": race(asian=0.5, caucasian=0.5)},
+        "hair": "short03/short03.mhclo",
+        "eyebrows": "eyebrow002/eyebrow002.mhclo",
+        "skin": "middleage_asian_male/middleage_asian_male.mhmat",
+        "eyes": "brown",
+        "clothes": [
+            "toigo_basic_tucked_t-shirt/toigo_basic_tucked_t-shirt.mhclo",
+            "cortu_cargo_pants/cortu_cargo_pants.mhclo",
+            "toigo_ankle_boots_male/toigo_ankle_boots_male.mhclo",
+        ],
+    },
+    {
+        "name": "onlooker_b",
+        "phenotype": {"gender": 0.0, "age": years(30), "muscle": 0.5, "weight": 0.5, "height": 0.5, "cupsize": 0.45, "race": race(african=0.8, caucasian=0.2)},
+        "hair": "afro01/afro01.mhclo",
+        "eyebrows": "eyebrow008/eyebrow008.mhclo",
+        "skin": "young_african_female/young_african_female.mhmat",
+        "eyes": "brown",
+        "clothes": [
+            "toigo_halter_dress_knee_length/toigo_halter_dress_knee_length.mhclo",
+            "toigo_ballet_flats/toigo_ballet_flats.mhclo",
+        ],
+    },
 ]
 
 only = sys.argv[sys.argv.index("--") + 1:] if "--" in sys.argv else []

@@ -6,6 +6,7 @@ import { Swinger } from "./actors/swinger";
 import { BallGame } from "./actors/ball-game";
 import { TagGame } from "./actors/tag-game";
 import { Parent } from "./actors/parent";
+import { Onlookers } from "./actors/onlookers";
 
 // Shared, live state of the park:
 // - points of interest, so characters can glance at each other;
@@ -42,6 +43,7 @@ export function Actors({ board, canvasRef, world }) {
       <BallGame world={world} />
       <TagGame world={world} />
       <Parent world={world} />
+      <Onlookers canvasRef={canvasRef} world={world} />
     </>
   );
 }
