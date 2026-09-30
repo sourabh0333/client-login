@@ -5,19 +5,18 @@ import test from "node:test";
 const pagePath = new URL("../src/app/page.js", import.meta.url);
 const layoutPath = new URL("../src/app/layout.js", import.meta.url);
 
-test("the public page is explicitly a credential-free demo", async () => {
+test("the local page renders the login-form demo", async () => {
   const page = await readFile(pagePath, "utf8");
 
-  assert.match(page, /Interactive demo/);
-  assert.match(page, /does not collect.*credentials/i);
-  assert.doesNotMatch(page, /LoginForm/);
-  assert.doesNotMatch(page, /Sign in/);
+  assert.match(page, /import LoginForm/);
+  assert.match(page, /<LoginForm/);
+  assert.match(page, /Welcome back/);
 });
 
-test("page metadata identifies the site as a demo", async () => {
+test("local metadata identifies the login preview", async () => {
   const [page, layout] = await Promise.all([readFile(pagePath, "utf8"), readFile(layoutPath, "utf8")]);
 
-  assert.match(page, /Client Portal Demo/);
-  assert.match(layout, /Client Portal Demo/);
-  assert.doesNotMatch(layout, /Sign in to your client account/);
+  assert.match(page, /title: "Sign in"/);
+  assert.match(layout, /title: "Client portal"/);
+  assert.match(layout, /Sign in to your client account/);
 });

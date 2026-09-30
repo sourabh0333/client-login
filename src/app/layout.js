@@ -13,8 +13,8 @@ const fraunces = Fraunces({
 });
 
 export const metadata = {
-  title: "Client Portal Demo",
-  description: "An interactive client portal concept preview. No credentials are collected.",
+  title: "Client portal",
+  description: "Sign in to your client account.",
 };
 
 export default function RootLayout({ children }) {

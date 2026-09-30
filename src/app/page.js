@@ -1,22 +1,23 @@
 import Link from "next/link";
+import LoginForm from "@/components/login-form";
 import ParkPanel from "@/components/park/park-panel";
 import styles from "./page.module.css";
 
 export const metadata = {
-  title: "Client Portal Demo",
-  description: "An interactive client portal concept preview. No credentials are collected.",
+  title: "Sign in",
+  description: "Sign in to your client account.",
 };
 
-export default function DemoPage() {
+export default function LoginPage() {
   return (
     <div className={styles.shell}>
-      {/* 30% demo context, 70% explorable park. */}
+      {/* 30% sign-in, 70% explorable park. */}
       <div className={styles.stage}>
         <ParkPanel />
       </div>
 
-      <main id="demo-card" className={styles.card}>
-        <Link href="/" className={styles.brand} aria-label="Client portal demo home">
+      <main id="auth-card" className={styles.card}>
+        <Link href="/" className={styles.brand} aria-label="Client portal home">
           <span className={styles.mark} aria-hidden="true">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
               <path
@@ -28,33 +29,23 @@ export default function DemoPage() {
               <path d="M12 21V10" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />
             </svg>
           </span>
-          Client portal demo
+          Client portal
         </Link>
 
         <div className={styles.content}>
-          <p className={styles.eyebrow}>Interactive demo</p>
-          <h1 className={styles.heading}>A calmer way to explore your client portal.</h1>
-          <p className={styles.lede}>
-            This concept preview pairs a simple portal layout with an explorable park scene for a more welcoming client experience.
-          </p>
-
-          <section className={styles.details} aria-labelledby="demo-features">
-            <h2 id="demo-features">Designed for review</h2>
-            <ul>
-              <li>A focused, approachable portal layout</li>
-              <li>An interactive 3D environment</li>
-              <li>Accessible motion and keyboard controls</li>
-            </ul>
-          </section>
-
-          <p className={styles.notice}>
-            <strong>Demo only.</strong> This preview does not collect or store credentials, and no account access is available here.
-          </p>
+          <h1 className={styles.heading}>Welcome back</h1>
+          <p className={styles.lede}>Sign in to see your account, documents and messages.</p>
+          <LoginForm />
         </div>
 
         <footer className={styles.footer}>
-          <span>A concept preview for client review.</span>
-          <span>No personal data is collected.</span>
+          <span>
+            New here? <a href="#contact">Request access</a>
+          </span>
+          <nav aria-label="Help and legal">
+            <a href="#help">Help</a>
+            <a href="#privacy">Privacy</a>
+          </nav>
         </footer>
       </main>
     </div>
