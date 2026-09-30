@@ -11,18 +11,15 @@ function useCanAnimate() {
   const [ok, setOk] = useState(null);
   useEffect(() => {
     const motion = window.matchMedia("(prefers-reduced-motion: reduce)");
-    const wide = window.matchMedia("(min-width: 900px)");
     const check = () => {
       const canvas = document.createElement("canvas");
-      const webgl = Boolean(canvas.getContext("webgl2"));
-      setOk(webgl && !motion.matches && wide.matches);
+      const webgl = Boolean(canvas.getContext("webgl2") || canvas.getContext("webgl"));
+      setOk(webgl && !motion.matches);
     };
     check();
     motion.addEventListener("change", check);
-    wide.addEventListener("change", check);
     return () => {
       motion.removeEventListener("change", check);
-      wide.removeEventListener("change", check);
     };
   }, []);
   return ok;
